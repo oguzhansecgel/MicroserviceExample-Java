@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+
+
+  elasticsearch-service:
+    build: ./ElasticSearch
+    ports:
+      - "8082:8082"
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+    networks:
+      - common
+
+  kafka-producer-service:
+    build: ./kafka-procuder
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - kafka
+    networks:
+      - common
+
+  kafka-consumer-service:
+    build: ./kafka-consumer
+    ports:
+      - "8081:8081"
+    restart: on-failure
+    depends_on:
+      - kafka
+    networks:
+      - common
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    container_name: elasticsearch-new
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xmx512m -Xms512m
+    ports:
+      - "9200:9200"
+    networks:
+      - common
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+  kafka:
+    image: confluentinc/cp-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+networks:
+  common:
+    driver: bridge
