@@ -2,39 +2,6 @@ version: '3.8'
 
 services:
 
-  elasticsearch-service:
-    build: ./ElasticSearch
-    ports:
-      - "8082:8082"
-    restart: on-failure
-    depends_on:
-      - elasticsearch
-      - config-server
-    environment:
-      - SPRING_CLOUD_CONFIG_PROFILE=prod
-      - CONFIGURL=http://config-server:8079
-    networks:
-      - common
-
-  kafka-producer-service:
-    build: ./kafka-producer
-    ports:
-      - "8080:8080"
-    restart: on-failure
-    depends_on:
-      - kafka
-    networks:
-      - common
-
-  kafka-consumer-service:
-    build: ./kafka-consumer
-    ports:
-      - "8081:8081"
-    restart: on-failure
-    depends_on:
-      - kafka
-    networks:
-      - common
 
   config-server:
     build:
@@ -69,6 +36,9 @@ services:
     build:
       context: ./DiscoveryServer
       dockerfile: Dockerfile
+      args:
+        GITHUB_USERNAME: ${GITHUB_USERNAME}
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
     ports:
       - "8888:8888"
     restart: on-failure
@@ -77,6 +47,8 @@ services:
       - CONFIGURL=http://config-server:8079
     networks:
       - common
+
+
   kibana:
     image: docker.elastic.co/kibana/kibana:8.7.1
     environment:
@@ -91,11 +63,10 @@ services:
       - 5601:5601
     volumes:
       - kibana-data:/usr/share/kibana/data
-
   zookeeper:
     image: confluentinc/cp-zookeeper
     ports:
-      - "2181:2181"
+     - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     networks:
@@ -108,7 +79,7 @@ services:
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_INTERNAL://kafka:29092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://0.0.0.0:29092
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
