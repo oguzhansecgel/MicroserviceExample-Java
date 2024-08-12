@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
 
-
   elasticsearch-service:
     build: ./ElasticSearch
     ports:
@@ -10,11 +9,15 @@ services:
     restart: on-failure
     depends_on:
       - elasticsearch
+      - config-server
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
+      - CONFIGURL=http://config-server:8079
     networks:
       - common
 
   kafka-producer-service:
-    build: ./kafka-procuder
+    build: ./kafka-producer
     ports:
       - "8080:8080"
     restart: on-failure
@@ -33,22 +36,71 @@ services:
     networks:
       - common
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
-    container_name: elasticsearch-new
-    environment:
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xmx512m -Xms512m
+  config-server:
+    build:
+      context: ./ConfigServer
+      dockerfile: Dockerfile
+      args:
+        GITHUB_USERNAME: ${GITHUB_USERNAME}
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
     ports:
-      - "9200:9200"
+      - "8079:8079"
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/oguzhansecgel/MicroserviceExample-Config
     networks:
       - common
+
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+    expose:
+      - 9200
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+    networks:
+      - common
+    ports:
+      - 9200:9200
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
+  discovery-server:
+    build:
+      context: ./DiscoveryServer
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    restart: on-failure
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
+      - CONFIGURL=http://config-server:8079
+    networks:
+      - common
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.7.1
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    expose:
+      - 5601
+    networks:
+      - common
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    volumes:
+      - kibana-data:/usr/share/kibana/data
+
   zookeeper:
     image: confluentinc/cp-zookeeper
     ports:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - common
+
   kafka:
     image: confluentinc/cp-kafka
     ports:
@@ -56,11 +108,20 @@ services:
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://0.0.0.0:29092
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - common
 
 networks:
   common:
     driver: bridge
+
+volumes:
+  elasticsearch-data:
+    driver: local
+  kibana-data:
+    driver: local

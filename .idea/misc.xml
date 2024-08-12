@@ -7,7 +7,16 @@
         <option value="$PROJECT_DIR$/kafka-procuder/pom.xml" />
         <option value="$PROJECT_DIR$/kafka-consumer/pom.xml" />
         <option value="$PROJECT_DIR$/ElasticSearch/pom.xml" />
+        <option value="$PROJECT_DIR$/kafka-producer/pom.xml" />
+        <option value="$PROJECT_DIR$/ConfigServer/pom.xml" />
+        <option value="$PROJECT_DIR$/DiscoveryServer/pom.xml" />
+        <option value="$PROJECT_DIR$/GatewayServer/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/GatewayServer/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_22" project-jdk-name="21" project-jdk-type="JavaSDK">
