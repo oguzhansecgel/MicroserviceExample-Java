@@ -2,7 +2,7 @@
 
 ## Proje Açıklaması
 
-Bu proje, Java Spring Boot ve Spring Cloud kullanılarak geliştirilmiş bir mikro servis uygulamasıdır ve Kafka, Elasticsearch gibi teknolojilerin kullanımını gösterir.
+Bu proje, Java Spring Boot ve Spring Cloud kullanılarak geliştirilmiş bir mikro servis uygulamasıdır ve Kafka, Elasticsearch gibi teknolojilerin giriş seviye kullanımını gösterir.
 
 ## Kullanılan Teknolojiler
 

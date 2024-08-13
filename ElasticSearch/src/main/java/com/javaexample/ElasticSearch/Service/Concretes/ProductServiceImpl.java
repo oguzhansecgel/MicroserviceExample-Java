@@ -28,4 +28,10 @@ public class ProductServiceImpl implements ProductService {
         Iterable<Product> products = productRepository.findAll();
         return products;
     }
+
+    @Override
+    public List<Product> findByProductNameContaining(String productName) {
+        List<Product> products = productRepository.findByProductNameContaining(productName);
+        return products;
+    }
 }

@@ -8,4 +8,5 @@ public interface ProductService {
 
     List<Product> productPriceBetween(Integer lower, Integer upper);
     Iterable<Product> getAllProducts();
+    List<Product> findByProductNameContaining(String productName);
 }
