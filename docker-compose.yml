@@ -2,6 +2,61 @@ version: '3.8'
 
 services:
 
+  elasticsearch-service:
+    build:
+      context: ./ElasticSearch
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    restart: on-failure
+    depends_on:
+      - discovery-server
+      - config-server
+    networks:
+      - common
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
+      - CONFIGURL=http://config-server:8079
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8888/eureka/
+
+  kafka-producer-service:
+    build:
+      context: ./kafka-procuder
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - discovery-server
+      - config-server
+      - kafka
+    networks:
+      - common
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
+      - CONFIGURL=http://config-server:8079
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8888/eureka/
+
+
+  kafka-consumer-service:
+    build:
+      context: ./kafka-consumer
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    restart: on-failure
+    depends_on:
+      - discovery-server
+      - config-server
+      - kafka
+    networks:
+      - common
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
+      - CONFIGURL=http://config-server:8079
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8888/eureka/
+
+
   config-server:
     build:
       context: ./ConfigServer
@@ -41,11 +96,12 @@ services:
     image: wurstmeister/kafka:latest
     ports:
       - "9092:9092"
+      - "9093:9093"
     environment:
       KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
       KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_LISTENER_NAME: INSIDE
+      KAFKA_LISTENER_NAMES: INSIDE,OUTSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
     networks:
