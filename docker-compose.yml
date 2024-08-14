@@ -1,6 +1,43 @@
-version: '3.8'
-
 services:
+
+  product-service:
+    container_name: product-service-prod
+    build:
+      context: ./ProductService
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    restart: on-failure
+    depends_on:
+      - product-db
+      - discovery-server
+      - config-server
+    networks:
+      - common
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
+      - CONFIGURL=http://config-server:8079
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://product-db:5432/ExampleProductDB
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=test
+
+  order-service:
+    container_name: order-service-prod
+    build:
+      context: ./OrderService
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    restart: on-failure
+    depends_on:
+      - order-db
+      - discovery-server
+      - config-server
+    networks:
+      - common
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
+      - CONFIGURL=http://config-server:8079
 
   elasticsearch-service:
     build:
@@ -129,7 +166,12 @@ services:
         soft: -1
         hard: -1
 
-
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - common
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.14.3
@@ -141,6 +183,30 @@ services:
     networks:
       - common
 
+  product-db:
+    image: postgres
+    container_name: product-db-prod
+    environment:
+      POSTGRES_DB: ExampleProductDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5438:5432"
+    volumes:
+      - product_data_prod:/var/lib/postgresql/data
+    networks:
+      - common
+
+  order-db:
+    image: mongo:latest
+    container_name: cart-db-prod
+    ports:
+      - "27030:27017"
+    volumes:
+      - order_data_prod:/data/db
+    networks:
+      - common
+
 networks:
   common:
     driver: bridge
@@ -149,4 +215,8 @@ volumes:
   elasticsearch-data:
     driver: local
   kibana-data:
+    driver: local
+  product_data_prod:
+    driver: local
+  order_data_prod:
     driver: local
