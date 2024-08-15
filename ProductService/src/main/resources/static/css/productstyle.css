@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.navbar {
+    background-color: #007bff; /* Mavi renk */
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    font-weight: bold; /* Yazıları kalın yapar */
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-weight: bold; /* Yazıları kalın yapar */
+}
+.navbar a:hover {
+    text-decoration: underline; /* Üzerine gelince altı çizilir */
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+.card {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.card h3 {
+    margin: 0;
+}
+.card p {
+    margin: 5px 0;
+}

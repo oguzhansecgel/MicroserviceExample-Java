@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            background-color: #007bff; /* Mavi renk */
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-weight: bold; /* Yazıları kalın yapar */
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold; /* Yazıları kalın yapar */
+        }
+        .navbar a:hover {
+            text-decoration: underline; /* Üzerine gelince altı çizilir */
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            margin: 0;
+        }
+        .card p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a href="http://localhost:63343/JavaExample/ProductService/src/main/resources/static/index.html">Ürünler</a>
+    <a href="orderindex.html">Siparişler</a>
+    <a href="http://localhost:63343/JavaExample/ElasticSearch/src/main/resources/static/elasticindex.html">Ürün Arama</a>
+
+</div>
+<div class="container" id="order-container">
+    <!-- Sipariş kartları buraya eklenecek -->
+</div>
+
+<script>
+    async function fetchOrders() {
+        try {
+            const response = await fetch('http://localhost:8084/orders/getListByAllOrder');
+            const orders = await response.json();
+            displayOrders(orders);
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        }
+    }
+
+    function displayOrders(orders) {
+        const container = document.getElementById('order-container');
+        container.innerHTML = ''; // Clear previous content
+
+        orders.forEach(order => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                    <h3>${order.productName}</h3>
+                    <p>${order.description}</p>
+                    <p>Color: ${order.color}</p>
+                    <p>Price: ${order.productPrice} TL</p>
+                    <p>Stock: ${order.stock}</p>
+                `;
+            container.appendChild(card);
+        });
+    }
+
+    // Fetch orders on page load
+    fetchOrders();
+</script>
+</body>
+</html>

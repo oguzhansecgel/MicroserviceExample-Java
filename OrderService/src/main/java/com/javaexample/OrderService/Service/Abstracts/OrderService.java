@@ -8,4 +8,5 @@ public interface OrderService {
 
     Order createOrder(int productId);
     List<Order> getAllOrders();
+    void deleteOrder(String orderId);
 }

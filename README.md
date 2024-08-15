@@ -108,6 +108,7 @@ Eğer API'ler mevcutsa, API uç noktaları ve kullanım detayları burada yer al
 - Yeni bir ürün eklemek için: `POST /product/createProduct`
 - Belirli bir ürünü silmek için: `DELETE /product/deleteProduct/{id}`
 - Belirli bir ürünü güncellemek için: `PUT /product/updateProduct/{id}`
+- Belirli bir ürünün stoğunun düşmesi için : `PUT /product/decrementStock/{id}`
 
 #### Sipariş API
 - Yeni bir sipariş oluşturmak için: `POST /orders/createOrder?productId={productId}`

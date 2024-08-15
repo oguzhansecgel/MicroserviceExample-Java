@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findByProductNameContaining(String productName) {
-        List<Product> products = productRepository.findByProductNameContaining(productName);
+        List<Product> products = productRepository.findByProductNameContaining(productName.toLowerCase());
         return products;
     }
 }

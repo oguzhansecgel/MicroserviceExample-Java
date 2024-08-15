@@ -24,4 +24,9 @@ public class OrderController {
     public List<Order> getListByAllOrder() {
         return orderService.getAllOrders();
     }
+    @DeleteMapping("/deleteOrder/{id}")
+    public void deleteOrder(@PathVariable String id)
+    {
+        orderService.deleteOrder(id);
+    }
 }

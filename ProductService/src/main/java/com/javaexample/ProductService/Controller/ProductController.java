@@ -2,8 +2,11 @@ package com.javaexample.ProductService.Controller;
 
 import com.javaexample.ProductService.Entity.Product;
 import com.javaexample.ProductService.Service.Abstracts.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,17 +20,29 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/findAll")
-    public List<Product> findAll() {
-
-        return productService.getAllProduct();
+    @GetMapping("/products")
+    public Page<Product> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.getAllProduct(pageable);
     }
     @GetMapping("/getByIdProduct/{id}")
     public Optional<Product> getByIdProduct(@PathVariable int id) {
         return productService.getProductById(id);
     }
+    @GetMapping("/productStockCount/{id}")
+    public Integer getProductStockCount(@PathVariable int id)
+    {
+        return productService.getProductStockCount(id);
+    }
+    @PutMapping("/decrementStock/{id}")
+    public void decrementStock(@PathVariable int id)
+    {
+        productService.decrementStock(id);
+    }
     @PostMapping("/createProduct")
-    public Product createProduct(@RequestBody Product product) {
+    public Product createProduct(@Valid @RequestBody Product product) {
         return productService.createProduct(product);
     }
     @DeleteMapping("/deleteProduct/{id}")
