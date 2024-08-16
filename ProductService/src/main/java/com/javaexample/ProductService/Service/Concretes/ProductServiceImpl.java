@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
         existProduct.setColor(product.getColor());
         existProduct.setProductPrice(product.getProductPrice());
         existProduct.setStock(product.getStock());
-
+        elasticSearchProducer.updateProduct(existProduct);
         return productRepository.saveAndFlush(existProduct);
 
     }

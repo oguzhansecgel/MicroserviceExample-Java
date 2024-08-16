@@ -34,4 +34,19 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findByProductNameContaining(productName.toLowerCase());
         return products;
     }
+
+    @Override
+    public Product updateProduct(Integer productId, Product product) {
+        return productRepository.findById(productId)
+                .map(existingProduct -> {
+                    existingProduct.setProductName(product.getProductName());
+                    existingProduct.setDescription(product.getDescription());
+                    existingProduct.setColor(product.getColor());
+                    existingProduct.setProductPrice(product.getProductPrice());
+                    existingProduct.setStock(product.getStock());
+
+                    return productRepository.save(existingProduct);
+                })
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+    }
 }

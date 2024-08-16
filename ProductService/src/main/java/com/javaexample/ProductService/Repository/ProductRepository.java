@@ -8,9 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 public interface ProductRepository extends JpaRepository<Product,Integer> {
 
-    @Query("select p.stock from Product p where p.id=:productId")
+    @Query("select p.stock from Product p where p.productId=:productId")
     Integer stockCount(@Param("productId")int productId);
 
     Page<Product> findAll(Pageable pageable);
     boolean existsById(int id);
+
+
 }

@@ -19,7 +19,6 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductClient productClient;
-
     private final CustomerClient customerClient;
     private final ProductProducer productProducer;
 
@@ -44,7 +43,6 @@ public class OrderServiceImpl implements OrderService {
         productClient.decrementStock(productId);
         order.setOrderId();
         Order savedOrder = orderRepository.save(order);
-
         return savedOrder;
     }
 
