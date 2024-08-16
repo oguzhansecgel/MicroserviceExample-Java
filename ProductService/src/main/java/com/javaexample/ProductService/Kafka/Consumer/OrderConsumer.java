@@ -20,9 +20,9 @@ public class OrderConsumer {
 
 
     @KafkaListener(topics = "${spring.kafka.topic.product-stoc-topic.name}")
-    public void listen(Product product)
+    public void listen(Integer productId)
     {
-        productService.decrementStock(product.getProductId());
-        System.out.println("Ürünün Stoğu azaltıldı." + product);
+        productService.decrementStock(productId);
+        System.out.println("Ürünün Stoğu azaltıldı." + productId);
     }
 }

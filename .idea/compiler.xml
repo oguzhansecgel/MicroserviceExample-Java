@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DiscoveryServer" />
+        <module name="CustomerService" />
         <module name="ElasticSearch" />
         <module name="kafka-consumer" />
         <module name="ProductService" />
@@ -16,10 +17,15 @@
         <module name="GatewayServer" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Common" target="21" />
+      <module name="KafkaCommon" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ConfigServer" options="-parameters" />
+      <module name="CustomerService" options="-parameters" />
       <module name="DiscoveryServer" options="-parameters" />
       <module name="ElasticSearch" options="-parameters" />
       <module name="GatewayServer" options="-parameters" />

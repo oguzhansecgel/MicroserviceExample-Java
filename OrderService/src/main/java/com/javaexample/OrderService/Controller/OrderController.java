@@ -17,12 +17,16 @@ public class OrderController {
     }
 
     @PostMapping("/createOrder")
-    public Order createOrder(@RequestParam int productId) {
-         return orderService.createOrder(productId);
+    public Order createOrder(@RequestParam int productId, @RequestParam int customerId) {
+         return orderService.createOrder(productId,customerId);
     }
     @GetMapping("/getListByAllOrder")
     public List<Order> getListByAllOrder() {
         return orderService.getAllOrders();
+    }
+    @GetMapping("/getCustomerCart/{id}")
+    public List<Order> getCustomerCart(@PathVariable long id) {
+        return orderService.getCustomerCart(id);
     }
     @DeleteMapping("/deleteOrder/{id}")
     public void deleteOrder(@PathVariable String id)

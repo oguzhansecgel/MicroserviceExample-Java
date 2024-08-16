@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component;
 public class ProductProducer {
 
 
-    private final KafkaTemplate<String,Object> kafkaTemplate;
+    private final KafkaTemplate<String,Integer> kafkaTemplate;
 
     @Value("${spring.kafka.topic.product-stoc-topic.name}")
     private String PSTOPIC;
 
-    public ProductProducer(KafkaTemplate<String, Object> kafkaTemplate) {
+    public ProductProducer(KafkaTemplate<String, Integer> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(Object message) {
-        kafkaTemplate.send(PSTOPIC,message);
-        System.out.println("Ürün sipariş verildi stok azaltma işlemi :  " + message);
+    public void sendMessage(Integer productId) {
+        kafkaTemplate.send(PSTOPIC,productId);
+        System.out.println("Ürün sipariş verildi stok azaltma işlemi :  " + productId);
     }
 }

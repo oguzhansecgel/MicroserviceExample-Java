@@ -41,8 +41,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(int id, Product product) {
-        Optional<Product> productOptional = productRepository.findById(id);
-        return productRepository.saveAndFlush(product);
+        Product existProduct = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
+
+        existProduct.setProductName(product.getProductName());
+        existProduct.setDescription(product.getDescription());
+        existProduct.setColor(product.getColor());
+        existProduct.setProductPrice(product.getProductPrice());
+        existProduct.setStock(product.getStock());
+
+        return productRepository.saveAndFlush(existProduct);
 
     }
 

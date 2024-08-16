@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -16,12 +17,8 @@ public class Order {
 
     @Id
     private String orderId;
-    private int productId;
-    private String productName;
-    private String description;
-    private String color;
-    private int productPrice;
-    private int stock;
+    private CustomerDto customer;
+    private ProductDto products;
     public void setOrderId() {
         this.orderId = UUID.randomUUID().toString();
     }
