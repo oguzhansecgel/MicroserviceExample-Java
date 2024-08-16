@@ -18,6 +18,6 @@ public class ElasticSearch {
 
     public void sendMessage(Object message) {
         kafkaTemplate.send(EPTOPIC,message);
-        System.out.println("Mesaj ElasticSearch Servisine Başarıyla Gönderildi. Gönderilen Mesaj :  " + message);
+        System.out.println("Mesaj Search Servisine Başarıyla Gönderildi. Gönderilen Mesaj :  " + message);
     }
 }

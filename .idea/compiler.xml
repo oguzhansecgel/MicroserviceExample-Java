@@ -13,11 +13,9 @@
         <module name="kafka-procuder" />
         <module name="ConfigServer" />
         <module name="OrderService" />
+        <module name="GatewayServer" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="GatewayServer" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

@@ -16,7 +16,7 @@ public class ConsumerListener {
     @KafkaListener(topics = "${spring.kafka.template.default-topic}")
     public void consumer(ConsumerRecord<String, Product> payload)
     {
-        System.out.println(payload.value());
+        System.out.println("Consumer tarafından mesaj alındı  : "+payload.value());
 
     }
 }

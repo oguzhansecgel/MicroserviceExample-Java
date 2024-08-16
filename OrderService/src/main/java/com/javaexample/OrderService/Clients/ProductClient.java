@@ -17,6 +17,9 @@ public interface ProductClient {
     @GetMapping("/product/productStockCount/{id}")
     Integer getProductStockCount(@PathVariable int id);
 
+    @GetMapping("/product/existByProduct/{id}")
+    boolean existByProduct(@PathVariable int id);
+
     @PutMapping("/product/decrementStock/{id}")
     void decrementStock(@PathVariable int id);
 }

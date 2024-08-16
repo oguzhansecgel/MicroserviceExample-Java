@@ -36,6 +36,10 @@ public class ProductController {
     {
         return productService.getProductStockCount(id);
     }
+    @GetMapping("/existByProduct/{id}")
+    public boolean existByProduct(@PathVariable int id) {
+        return productService.existsById(id);
+    }
     @PutMapping("/decrementStock/{id}")
     public void decrementStock(@PathVariable int id)
     {

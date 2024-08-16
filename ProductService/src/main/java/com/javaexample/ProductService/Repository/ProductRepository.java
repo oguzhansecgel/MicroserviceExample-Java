@@ -12,4 +12,5 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     Integer stockCount(@Param("productId")int productId);
 
     Page<Product> findAll(Pageable pageable);
+    boolean existsById(int id);
 }

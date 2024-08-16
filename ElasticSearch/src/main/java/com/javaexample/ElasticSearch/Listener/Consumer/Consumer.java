@@ -21,6 +21,6 @@ public class Consumer {
     public void listen(Product product)
     {
         productRepository.save(product);
-        System.out.println("Product saved: " + product);
+        System.out.println("Producer Tarafından İletilen Mesaj Alındı : " + product);
     }
 }

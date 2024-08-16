@@ -75,5 +75,12 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    @Override
+    public boolean existsById(int id) {
+        boolean existProduct = productRepository.existsById(id);
+        return existProduct;
+
+    }
+
 
 }

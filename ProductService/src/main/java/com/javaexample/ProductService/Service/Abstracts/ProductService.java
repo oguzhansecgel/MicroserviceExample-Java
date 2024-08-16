@@ -15,4 +15,5 @@ public interface ProductService {
     Optional<Product> getProductById(int id);
     Integer getProductStockCount(int productId);
     void decrementStock(int productId);
+    boolean existsById(int id);
 }

@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @NoArgsConstructor
 public class Product {
     @Id
-    private int id;
+    private int productId;
     private String productName;
     private String description;
     private String color;
