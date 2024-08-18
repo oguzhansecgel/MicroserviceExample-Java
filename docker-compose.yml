@@ -32,13 +32,14 @@ services:
     depends_on:
       - discovery-server
       - config-server
+      - customer-db
     networks:
       - common
     environment:
       - SPRING_CLOUD_CONFIG_PROFILE=prod
       - CONFIGURL=http://config-server:8079
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-db:1521:xe
-      - SPRING_DATASOURCE_USERNAME=system
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://customer-db:5432/ExampleCustomerDB
+      - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=test
 
   order-service:
@@ -138,6 +139,20 @@ services:
       - CONFIGURL=http://config-server:8079
     networks:
       - common
+  gateway-server:
+    build:
+      context: ./GatewayServer
+    ports:
+      - "8086:8086"
+    restart: on-failure
+    depends_on:
+      - discovery-server
+      - config-server
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
+      - CONFIGURL=http://config-server:8079
+    networks:
+      - common
 
   zookeeper:
     image: wurstmeister/zookeeper:latest
@@ -217,6 +232,19 @@ services:
     networks:
       - common
 
+  customer-db:
+    image: postgres
+    container_name: customer-db-prod
+    environment:
+      POSTGRES_DB: ExampleCustomerDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5439:5432"
+    volumes:
+      - customer_data_prod:/var/lib/postgresql/data
+    networks:
+      - common
 
   order-db:
     image: mongo:latest
@@ -228,6 +256,7 @@ services:
     networks:
       - common
 
+
 networks:
   common:
     driver: bridge
@@ -238,6 +267,8 @@ volumes:
   kibana-data:
     driver: local
   product_data_prod:
+    driver: local
+  customer_data_prod:
     driver: local
   order_data_prod:
     driver: local
