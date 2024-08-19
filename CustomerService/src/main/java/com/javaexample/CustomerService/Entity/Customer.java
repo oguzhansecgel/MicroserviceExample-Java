@@ -14,8 +14,9 @@ import lombok.*;
 public class Customer {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CUSTOMERID", nullable = false)
-    private Long customerId;
+    private int customerId;
 
     @Column(name = "CUSTOMERNAME", length = 50)
     private String customerName;
