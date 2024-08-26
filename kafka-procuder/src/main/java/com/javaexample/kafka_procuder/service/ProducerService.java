@@ -26,9 +26,9 @@ public class ProducerService {
     }
 
     // ilk başta topic daha sonra value değeri yollanır.
-    public void sendMessage(Object message) {
-        kafkaTemplate.send(TOPIC,message);
-        System.out.println("Mesaj Kafkaya Gönderildi. Gönderilen Mesaj :  " + message);
+    public void sendMessage(Object message,int partion) {
+        kafkaTemplate.send(TOPIC,partion,null,message);
+        System.out.println("Mesaj Kafkaya Gönderildi. Gönderilen Mesaj :  " + message +" partion : "+partion);
     }
 
     public void sendElasticMessage(Object message) {

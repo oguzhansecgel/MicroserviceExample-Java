@@ -16,5 +16,4 @@ public interface ProductRepository extends ElasticsearchRepository<Product,Integ
     List<Product> findByProductNameContaining(@Param("productName") String productName);
 
 
-
 }

@@ -17,14 +17,17 @@ public class ProducerController {
     @GetMapping
     public String healtCheck(@RequestBody String message)
     {
-        producerService.sendMessage(message);
+
+            producerService.sendMessage(message,1);
+            producerService.sendMessage(message,2);
+
         return "Mesaj İletilmesi Başarılı.";
     }
 
     @PostMapping
     public Product sendProductMessage(@RequestBody Product product)
     {
-        producerService.sendMessage(product);
+        producerService.sendMessage(product,1);
         return product;
     }
 
