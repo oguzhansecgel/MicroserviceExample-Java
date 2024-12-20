@@ -137,7 +137,7 @@ spring.data.mongodb.uri=mongodb://localhost:27017/orderservice
 - **MongoDB ile Veri Saklama**: MongoDB'de veri saklayın ve sorgulama işlemleri yapın. MongoDB'nin NoSQL özelliklerinden yararlanarak veri yönetimini gerçekleştirin.
 - **Feign Client ile İletişim**: Feign Client kullanarak mikroservisler arasında veri alışverişi yapın. Feign Client, HTTP isteklerini kolayca yönetmenizi sağlar ve servisler arası iletişimi basitleştirir.
 
-## Destek
+## Destek,
 
 Herhangi bir sorunuz veya desteğe ihtiyacınız varsa, lütfen [açık bir sorun](https://github.com/oguzhansecgel) oluşturun veya benimle iletişime geçin.
 
